@@ -1,0 +1,219 @@
+# Overbook — full stack for Milestones 0..8.
+#   docker compose up -d --build              # single api instance
+#   docker compose up -d --scale api=3        # M8: horizontal scaling behind nginx
+#
+# Everything speaks UTC: TZ/PGTZ are pinned so `timestamptz` values never get
+# rewritten by a container's local timezone.
+
+x-api-env: &api-env
+  NODE_ENV: ${NODE_ENV:-development}
+  PORT: '3000'
+  TZ: UTC
+  LOG_LEVEL: ${LOG_LEVEL:-info}
+  DB_HOST: postgres
+  DB_PORT: '5432'
+  DB_USERNAME: ${DB_USERNAME:-overbook}
+  DB_PASSWORD: ${DB_PASSWORD:-overbook}
+  DB_NAME: ${DB_NAME:-overbook}
+  DB_POOL_MAX: ${DB_POOL_MAX:-10}
+  REDIS_HOST: redis
+  REDIS_PORT: '6379'
+  KAFKA_BROKERS: kafka:9092
+  KAFKA_CLIENT_ID: ${KAFKA_CLIENT_ID:-overbook}
+  KAFKA_CONSUMER_GROUP: ${KAFKA_CONSUMER_GROUP:-overbook-notifications}
+  KAFKA_TOPIC_BOOKING: ${KAFKA_TOPIC_BOOKING:-booking.events}
+  KAFKA_TOPIC_RETRY: ${KAFKA_TOPIC_RETRY:-booking.events.retry}
+  KAFKA_TOPIC_DLQ: ${KAFKA_TOPIC_DLQ:-booking.events.dlq}
+  BOOKING_LOCK_STRATEGY: ${BOOKING_LOCK_STRATEGY:-pessimistic}
+  CACHE_ENABLED: ${CACHE_ENABLED:-true}
+  CACHE_TTL_SECONDS: ${CACHE_TTL_SECONDS:-30}
+  CACHE_TTL_JITTER_SECONDS: ${CACHE_TTL_JITTER_SECONDS:-10}
+  CACHE_STAMPEDE_PROTECTION: ${CACHE_STAMPEDE_PROTECTION:-true}
+  CACHE_LOCK_TTL_MS: ${CACHE_LOCK_TTL_MS:-5000}
+  CACHE_STALE_SECONDS: ${CACHE_STALE_SECONDS:-60}
+  OUTBOX_ENABLED: ${OUTBOX_ENABLED:-true}
+  OUTBOX_RELAY_ENABLED: ${OUTBOX_RELAY_ENABLED:-true}
+  OUTBOX_POLL_INTERVAL_MS: ${OUTBOX_POLL_INTERVAL_MS:-1000}
+  OUTBOX_BATCH_SIZE: ${OUTBOX_BATCH_SIZE:-100}
+  OUTBOX_MAX_ATTEMPTS: ${OUTBOX_MAX_ATTEMPTS:-10}
+  FAULT_CRASH_AFTER_BOOKING_COMMIT: ${FAULT_CRASH_AFTER_BOOKING_COMMIT:-false}
+  DIRECT_PUBLISH_MODE: ${DIRECT_PUBLISH_MODE:-false}
+  NOTIFICATION_FAILURE_RATE: ${NOTIFICATION_FAILURE_RATE:-0}
+  NOTIFICATION_MAX_ATTEMPTS: ${NOTIFICATION_MAX_ATTEMPTS:-3}
+  NOTIFICATION_RETRY_BASE_MS: ${NOTIFICATION_RETRY_BASE_MS:-500}
+  NOTIFICATION_RETRY_MAX_MS: ${NOTIFICATION_RETRY_MAX_MS:-30000}
+  NOTIFICATION_CONCURRENCY: ${NOTIFICATION_CONCURRENCY:-10}
+  CONSUMER_ENABLED: ${CONSUMER_ENABLED:-true}
+  RATE_LIMIT_ENABLED: ${RATE_LIMIT_ENABLED:-true}
+  RATE_LIMIT_CAPACITY: ${RATE_LIMIT_CAPACITY:-20}
+  RATE_LIMIT_REFILL_PER_SECOND: ${RATE_LIMIT_REFILL_PER_SECOND:-10}
+  SHUTDOWN_DRAIN_MS: ${SHUTDOWN_DRAIN_MS:-5000}
+
+services:
+  # One-shot migration runner. Kept separate from `api` so that scaling the api
+  # to N replicas does not race N concurrent `migration:run` processes.
+  migrate:
+    build:
+      context: .
+      target: dev
+    environment: *api-env
+    command: sh -c "pnpm run migration:run"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: 'no'
+
+  api:
+    build:
+      context: .
+      target: dev
+    environment: *api-env
+    # No container_name: it must stay scalable (`--scale api=3`).
+    volumes:
+      - ./src:/app/src
+      - ./test:/app/test
+      - ./tsconfig.json:/app/tsconfig.json
+      - ./tsconfig.build.json:/app/tsconfig.build.json
+      - ./nest-cli.json:/app/nest-cli.json
+    expose:
+      - '3000'
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+    # M8: give the app time to drain in-flight requests on SIGTERM.
+    stop_grace_period: 30s
+    healthcheck:
+      test: ['CMD', 'curl', '-fsS', 'http://localhost:3000/health/live']
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 30s
+
+  postgres:
+    image: postgres:17-alpine
+    container_name: overbook-postgres
+    environment:
+      POSTGRES_USER: ${DB_USERNAME:-overbook}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-overbook}
+      POSTGRES_DB: ${DB_NAME:-overbook}
+      TZ: UTC
+      PGTZ: UTC
+    command: ['postgres', '-c', 'timezone=UTC', '-c', 'max_connections=200']
+    ports:
+      - '5433:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    container_name: overbook-redis
+    command: ['redis-server', '--appendonly', 'no', '--maxmemory-policy', 'allkeys-lru']
+    ports:
+      - '6379:6379'
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  # Kafka in KRaft mode — no Zookeeper.
+  kafka:
+    image: bitnami/kafka:3.9
+    container_name: overbook-kafka
+    environment:
+      KAFKA_CFG_NODE_ID: '1'
+      KAFKA_CFG_PROCESS_ROLES: broker,controller
+      KAFKA_CFG_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
+      KAFKA_CFG_LISTENERS: PLAINTEXT://:9092,CONTROLLER://:9093,EXTERNAL://:29092
+      KAFKA_CFG_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,EXTERNAL://localhost:29092
+      KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_CFG_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_CFG_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_CFG_OFFSETS_TOPIC_REPLICATION_FACTOR: '1'
+      KAFKA_CFG_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: '1'
+      KAFKA_CFG_TRANSACTION_STATE_LOG_MIN_ISR: '1'
+      KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE: 'true'
+      ALLOW_PLAINTEXT_LISTENER: 'yes'
+      TZ: UTC
+    ports:
+      - '29092:29092'
+    volumes:
+      - kafka_data:/bitnami/kafka
+    healthcheck:
+      test: ['CMD-SHELL', 'kafka-broker-api-versions.sh --bootstrap-server localhost:9092 >/dev/null 2>&1']
+      interval: 10s
+      timeout: 10s
+      retries: 15
+      start_period: 30s
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: overbook-kafka-ui
+    environment:
+      KAFKA_CLUSTERS_0_NAME: overbook
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
+      DYNAMIC_CONFIG_ENABLED: 'true'
+    ports:
+      - '8081:8080'
+    depends_on:
+      kafka:
+        condition: service_healthy
+
+  nginx:
+    image: nginx:1.27-alpine
+    container_name: overbook-nginx
+    ports:
+      - '8080:80'
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - api
+
+  prometheus:
+    image: prom/prometheus:v3.1.0
+    container_name: overbook-prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.enable-lifecycle'
+    ports:
+      - '9090:9090'
+    volumes:
+      - ./monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+
+  grafana:
+    image: grafana/grafana:11.5.1
+    container_name: overbook-grafana
+    environment:
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_USER:-admin}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD:-admin}
+      GF_USERS_ALLOW_SIGN_UP: 'false'
+      GF_AUTH_ANONYMOUS_ENABLED: 'true'
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Viewer
+      TZ: UTC
+    ports:
+      - '3001:3000'
+    volumes:
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./monitoring/grafana/dashboards:/var/lib/grafana/dashboards:ro
+      - grafana_data:/var/lib/grafana
+    depends_on:
+      - prometheus
+
+volumes:
+  postgres_data:
+  kafka_data:
+  prometheus_data:
+  grafana_data:
