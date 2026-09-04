@@ -241,16 +241,18 @@ export class BookingsService {
       .findOne({ where: { id: eventId } });
     if (!event) throw new NotFoundException(`Event ${eventId} not found`);
 
-    const { sum } = await this.bookings
+    const totals = await this.bookings
       .createQueryBuilder('booking')
       .select('COALESCE(SUM(booking.quantity), 0)', 'sum')
       .where('booking.event_id = :eventId AND booking.status = :status', {
         eventId,
         status: 'confirmed',
       })
-      .getRawOne<{ sum: string }>()!;
+      .getRawOne<{ sum: string }>();
 
-    const confirmedSeats = Number(sum ?? 0);
+    // SUM() comes back as a string from pg: bigint does not fit a JS number,
+    // so the driver refuses to guess.
+    const confirmedSeats = Number(totals?.sum ?? 0);
     return {
       eventId,
       totalSeats: event.totalSeats,

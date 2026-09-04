@@ -1,0 +1,4 @@
+# pnpm 11 config for this single app (not a monorepo).
+# Postinstall scripts are opt-in; only these are allowed to run.
+allowBuilds:
+  '@scarf/scarf': true

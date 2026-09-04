@@ -28,7 +28,9 @@ export class IdempotencyKeyEntity {
   responseStatus!: number | null;
 
   @Column({ type: 'jsonb', name: 'response_body', nullable: true })
-  responseBody!: unknown | null;
+  // `any` rather than `unknown`: TypeORM's QueryDeepPartialEntity walks the
+  // property type recursively and cannot express an opaque jsonb blob.
+  responseBody!: Record<string, any> | null;
 
   @CreateDateColumn({ type: 'timestamptz', name: 'created_at' })
   createdAt!: Date;

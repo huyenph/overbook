@@ -128,7 +128,14 @@ export class IdempotencyInterceptor implements NestInterceptor {
 
   private async complete(key: string, status: number, body: unknown): Promise<void> {
     await this.keys
-      .update({ key }, { status: 'completed', responseStatus: status, responseBody: body })
+      .update(
+        { key },
+        {
+          status: 'completed',
+          responseStatus: status,
+          responseBody: body as Record<string, any>,
+        },
+      )
       .catch((error: Error) =>
         this.logger.error(`failed to persist idempotent response for ${key}: ${error.message}`),
       );

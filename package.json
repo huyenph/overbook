@@ -1,7 +1,7 @@
 {
   "name": "overbook",
   "version": "1.0.0",
-  "description": "Flash-sale ticket booking system — a hands-on system design lab (Milestones 0-8)",
+  "description": "Flash-sale ticket booking system \u2014 a hands-on system design lab (Milestones 0-8)",
   "private": true,
   "license": "UNLICENSED",
   "packageManager": "pnpm@11.20.0",
@@ -73,11 +73,19 @@
     "typescript-eslint": "^8.20.0"
   },
   "jest": {
-    "moduleFileExtensions": ["js", "json", "ts"],
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
     "rootDir": "src",
     "testRegex": ".*\\.spec\\.ts$",
-    "transform": { "^.+\\.(t|j)s$": "ts-jest" },
-    "collectCoverageFrom": ["**/*.(t|j)s"],
+    "transform": {
+      "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "collectCoverageFrom": [
+      "**/*.(t|j)s"
+    ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
   }
