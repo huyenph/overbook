@@ -1,0 +1,182 @@
+{
+  "uid": "overbook-main",
+  "title": "Overbook — System Design Lab",
+  "tags": ["overbook", "system-design"],
+  "timezone": "utc",
+  "schemaVersion": 39,
+  "version": 1,
+  "refresh": "5s",
+  "time": { "from": "now-15m", "to": "now" },
+  "templating": {
+    "list": [
+      {
+        "name": "replica",
+        "label": "API replica",
+        "type": "query",
+        "datasource": { "type": "prometheus", "uid": "overbook-prometheus" },
+        "query": "label_values(http_requests_total, instance)",
+        "includeAll": true,
+        "multi": true,
+        "current": { "text": "All", "value": "$__all" }
+      }
+    ]
+  },
+  "panels": [
+    {
+      "id": 1, "type": "stat", "title": "Throughput (req/s)",
+      "gridPos": { "h": 4, "w": 6, "x": 0, "y": 0 },
+      "datasource": { "type": "prometheus", "uid": "overbook-prometheus" },
+      "fieldConfig": { "defaults": { "unit": "reqps", "decimals": 1 }, "overrides": [] },
+      "targets": [
+        { "refId": "A", "expr": "sum(rate(http_requests_total{instance=~\"$replica\"}[1m]))", "legendFormat": "rps" }
+      ]
+    },
+    {
+      "id": 2, "type": "stat", "title": "Latency p95",
+      "gridPos": { "h": 4, "w": 6, "x": 6, "y": 0 },
+      "datasource": { "type": "prometheus", "uid": "overbook-prometheus" },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s", "decimals": 3,
+          "thresholds": { "mode": "absolute", "steps": [ { "color": "green", "value": null }, { "color": "orange", "value": 0.2 }, { "color": "red", "value": 0.5 } ] }
+        },
+        "overrides": []
+      },
+      "targets": [
+        { "refId": "A", "expr": "histogram_quantile(0.95, sum by (le) (rate(http_request_duration_seconds_bucket{instance=~\"$replica\"}[1m])))", "legendFormat": "p95" }
+      ]
+    },
+    {
+      "id": 3, "type": "stat", "title": "Error rate (5xx)",
+      "gridPos": { "h": 4, "w": 6, "x": 12, "y": 0 },
+      "datasource": { "type": "prometheus", "uid": "overbook-prometheus" },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit", "decimals": 2,
+          "thresholds": { "mode": "absolute", "steps": [ { "color": "green", "value": null }, { "color": "red", "value": 0.01 } ] }
+        },
+        "overrides": []
+      },
+      "targets": [
+        { "refId": "A", "expr": "sum(rate(http_requests_total{status_code=~\"5..\",instance=~\"$replica\"}[1m])) / clamp_min(sum(rate(http_requests_total{instance=~\"$replica\"}[1m])), 1e-9)", "legendFormat": "5xx" }
+      ]
+    },
+    {
+      "id": 4, "type": "stat", "title": "Oversold seats (M1 — must stay 0)",
+      "gridPos": { "h": 4, "w": 6, "x": 18, "y": 0 },
+      "datasource": { "type": "prometheus", "uid": "overbook-prometheus" },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "thresholds": { "mode": "absolute", "steps": [ { "color": "green", "value": null }, { "color": "red", "value": 1 } ] }
+        },
+        "overrides": []
+      },
+      "targets": [ { "refId": "A", "expr": "sum(bookings_oversold_total)", "legendFormat": "oversold" } ]
+    },
+
+    {
+      "id": 10, "type": "timeseries", "title": "HTTP latency percentiles (M0)",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 4 },
+      "datasource": { "type": "prometheus", "uid": "overbook-prometheus" },
+      "fieldConfig": { "defaults": { "unit": "s", "custom": { "fillOpacity": 8, "lineWidth": 2 } }, "overrides": [] },
+      "targets": [
+        { "refId": "A", "expr": "histogram_quantile(0.50, sum by (le) (rate(http_request_duration_seconds_bucket{instance=~\"$replica\"}[1m])))", "legendFormat": "p50" },
+        { "refId": "B", "expr": "histogram_quantile(0.95, sum by (le) (rate(http_request_duration_seconds_bucket{instance=~\"$replica\"}[1m])))", "legendFormat": "p95" },
+        { "refId": "C", "expr": "histogram_quantile(0.99, sum by (le) (rate(http_request_duration_seconds_bucket{instance=~\"$replica\"}[1m])))", "legendFormat": "p99" }
+      ]
+    },
+    {
+      "id": 11, "type": "timeseries", "title": "Requests per second by route",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 4 },
+      "datasource": { "type": "prometheus", "uid": "overbook-prometheus" },
+      "fieldConfig": { "defaults": { "unit": "reqps", "custom": { "fillOpacity": 8, "lineWidth": 2, "stacking": { "mode": "normal" } } }, "overrides": [] },
+      "targets": [
+        { "refId": "A", "expr": "sum by (route, method) (rate(http_requests_total{instance=~\"$replica\"}[1m]))", "legendFormat": "{{method}} {{route}}" }
+      ]
+    },
+
+    {
+      "id": 20, "type": "timeseries", "title": "Bookings by outcome (M1/M2/M7)",
+      "gridPos": { "h": 8, "w": 8, "x": 0, "y": 12 },
+      "datasource": { "type": "prometheus", "uid": "overbook-prometheus" },
+      "fieldConfig": { "defaults": { "unit": "ops", "custom": { "fillOpacity": 15, "lineWidth": 1, "stacking": { "mode": "normal" } } }, "overrides": [] },
+      "targets": [
+        { "refId": "A", "expr": "sum by (result) (rate(bookings_total[1m]))", "legendFormat": "{{result}}" }
+      ]
+    },
+    {
+      "id": 21, "type": "timeseries", "title": "Cache hit ratio & outcomes (M3/M4)",
+      "gridPos": { "h": 8, "w": 8, "x": 8, "y": 12 },
+      "datasource": { "type": "prometheus", "uid": "overbook-prometheus" },
+      "fieldConfig": { "defaults": { "unit": "short", "custom": { "fillOpacity": 8, "lineWidth": 2 } }, "overrides": [ { "matcher": { "id": "byName", "options": "hit ratio" }, "properties": [ { "id": "unit", "value": "percentunit" } ] } ] },
+      "targets": [
+        { "refId": "A", "expr": "sum(rate(cache_requests_total{result=\"hit\"}[1m])) / clamp_min(sum(rate(cache_requests_total[1m])), 1e-9)", "legendFormat": "hit ratio" },
+        { "refId": "B", "expr": "sum by (result) (rate(cache_requests_total[1m]))", "legendFormat": "{{result}}/s" },
+        { "refId": "C", "expr": "sum(rate(cache_single_flight_waits_total[1m]))", "legendFormat": "single-flight waits/s" }
+      ]
+    },
+    {
+      "id": 22, "type": "timeseries", "title": "Rate limiter decisions (M7)",
+      "gridPos": { "h": 8, "w": 8, "x": 16, "y": 12 },
+      "datasource": { "type": "prometheus", "uid": "overbook-prometheus" },
+      "fieldConfig": { "defaults": { "unit": "ops", "custom": { "fillOpacity": 15, "lineWidth": 1, "stacking": { "mode": "normal" } } }, "overrides": [] },
+      "targets": [
+        { "refId": "A", "expr": "sum by (result) (rate(rate_limit_decisions_total[1m]))", "legendFormat": "{{result}}" }
+      ]
+    },
+
+    {
+      "id": 30, "type": "timeseries", "title": "Outbox backlog & relay (M5)",
+      "gridPos": { "h": 8, "w": 8, "x": 0, "y": 20 },
+      "datasource": { "type": "prometheus", "uid": "overbook-prometheus" },
+      "fieldConfig": { "defaults": { "unit": "short", "custom": { "fillOpacity": 8, "lineWidth": 2 } }, "overrides": [] },
+      "targets": [
+        { "refId": "A", "expr": "max(outbox_pending_messages)", "legendFormat": "pending" },
+        { "refId": "B", "expr": "sum(rate(outbox_published_total[1m]))", "legendFormat": "published/s" },
+        { "refId": "C", "expr": "sum(rate(outbox_publish_failures_total[1m]))", "legendFormat": "publish failures/s" }
+      ]
+    },
+    {
+      "id": 31, "type": "timeseries", "title": "Notification consumer: retry / DLQ (M6)",
+      "gridPos": { "h": 8, "w": 8, "x": 8, "y": 20 },
+      "datasource": { "type": "prometheus", "uid": "overbook-prometheus" },
+      "fieldConfig": { "defaults": { "unit": "ops", "custom": { "fillOpacity": 15, "lineWidth": 1, "stacking": { "mode": "normal" } } }, "overrides": [] },
+      "targets": [
+        { "refId": "A", "expr": "sum by (result) (rate(notifications_processed_total[1m]))", "legendFormat": "{{result}}" },
+        { "refId": "B", "expr": "sum(notification_in_flight)", "legendFormat": "in-flight (backpressure)" }
+      ]
+    },
+    {
+      "id": 32, "type": "timeseries", "title": "Kafka messages consumed",
+      "gridPos": { "h": 8, "w": 8, "x": 16, "y": 20 },
+      "datasource": { "type": "prometheus", "uid": "overbook-prometheus" },
+      "fieldConfig": { "defaults": { "unit": "ops", "custom": { "fillOpacity": 8, "lineWidth": 2 } }, "overrides": [] },
+      "targets": [
+        { "refId": "A", "expr": "sum by (topic) (rate(kafka_messages_consumed_total[1m]))", "legendFormat": "{{topic}}" }
+      ]
+    },
+
+    {
+      "id": 40, "type": "timeseries", "title": "Per-replica throughput (M8 — load balancing)",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 28 },
+      "datasource": { "type": "prometheus", "uid": "overbook-prometheus" },
+      "fieldConfig": { "defaults": { "unit": "reqps", "custom": { "fillOpacity": 8, "lineWidth": 2 } }, "overrides": [] },
+      "targets": [
+        { "refId": "A", "expr": "sum by (instance) (rate(http_requests_total[1m]))", "legendFormat": "{{instance}}" },
+        { "refId": "B", "expr": "sum by (instance) (http_requests_in_flight)", "legendFormat": "in-flight {{instance}}" }
+      ]
+    },
+    {
+      "id": 41, "type": "timeseries", "title": "Node process (CPU / RSS / event loop lag)",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 28 },
+      "datasource": { "type": "prometheus", "uid": "overbook-prometheus" },
+      "fieldConfig": { "defaults": { "unit": "short", "custom": { "fillOpacity": 0, "lineWidth": 2 } }, "overrides": [ { "matcher": { "id": "byRegexp", "options": ".*rss.*" }, "properties": [ { "id": "unit", "value": "bytes" } ] } ] },
+      "targets": [
+        { "refId": "A", "expr": "sum by (instance) (rate(process_cpu_seconds_total[1m]))", "legendFormat": "cpu {{instance}}" },
+        { "refId": "B", "expr": "sum by (instance) (process_resident_memory_bytes)", "legendFormat": "rss {{instance}}" },
+        { "refId": "C", "expr": "max by (instance) (nodejs_eventloop_lag_p99_seconds)", "legendFormat": "loop lag p99 {{instance}}" }
+      ]
+    }
+  ]
+}
