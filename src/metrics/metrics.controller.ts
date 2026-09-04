@@ -1,8 +1,11 @@
-import { Controller, Get, Header } from '@nestjs/common';
+import { Controller, Get, Header, VERSION_NEUTRAL } from '@nestjs/common';
 import { ApiExcludeEndpoint } from '@nestjs/swagger';
 import { MetricsService } from './metrics.service';
 
-@Controller('metrics')
+// VERSION_NEUTRAL: this is a scrape endpoint, not part of the versioned API.
+// Without it the global defaultVersion would move it to /v1/metrics and
+// Prometheus would quietly scrape a 404.
+@Controller({ path: 'metrics', version: VERSION_NEUTRAL })
 export class MetricsController {
   constructor(private readonly metrics: MetricsService) {}
 
