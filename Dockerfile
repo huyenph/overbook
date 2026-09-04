@@ -6,7 +6,9 @@ WORKDIR /app
 
 # ---------- deps ----------
 FROM base AS deps
-COPY package.json pnpm-lock.yaml* ./
+# pnpm-workspace.yaml carries the postinstall allowlist; without it pnpm
+# refuses the install for having skipped a build script.
+COPY package.json pnpm-lock.yaml* pnpm-workspace.yaml ./
 RUN pnpm install --no-frozen-lockfile
 
 # ---------- dev (hot reload, source is bind-mounted by compose) ----------
