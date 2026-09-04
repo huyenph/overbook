@@ -209,14 +209,32 @@ The api exits. The booking is in the database. The event is gone, and nothing
 anywhere records that it should have existed. That last part is the real
 problem: an error you cannot detect is worse than one you can.
 
+A detail worth pausing on: for the next few seconds `docker compose ps` still
+reports the api as **healthy** while nginx returns 502. The container's PID 1 is
+the dev watcher, which is very much alive; only the app died. The healthcheck
+does exercise the app (`curl /health/live`), so it flips to unhealthy — but only
+after an interval or two. That lag is the reason a load balancer needs its own
+readiness probe rather than trusting "the container is running".
+
+Because PID 1 survived, `docker compose up -d api` will not revive it. Use:
+
+```bash
+make restart-api
+```
+
 **Fix it.** Same crash, outbox on:
 
 ```bash
-FAULT_CRASH_AFTER_BOOKING_COMMIT=true docker compose up -d api
+make crash-safe
 # book again, api dies again, then:
-docker compose up -d api
+make restart-api
 curl localhost:8080/v1/outbox/stats        # pending drains to 0
 ```
+
+Measured here: after the crash the row sat at `pending|1`; after the restart the
+relay published it and it read `published|1`. In direct-publish mode the same
+crash left a committed booking with **no** outbox row and no event — nothing
+anywhere recorded that a notification was owed.
 
 The event was never lost, only late.
 

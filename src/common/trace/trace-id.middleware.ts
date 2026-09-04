@@ -6,7 +6,7 @@ import { TRACE_HEADER } from './trace.constants';
 @Injectable()
 export class TraceIdMiddleware implements NestMiddleware {
   use(req: Request, res: Response, next: NextFunction): void {
-    const traceId = resolveTraceId(req.headers as Record<string, string | string[] | undefined>);
+    const traceId = resolveTraceId(req.headers);
     (req as Request & { traceId: string }).traceId = traceId;
     req.headers[TRACE_HEADER] = traceId;
     res.setHeader(TRACE_HEADER, traceId);

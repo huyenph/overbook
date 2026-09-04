@@ -13,7 +13,11 @@ export class BookingResponseDto {
   lockStrategy!: string;
   @ApiProperty({ type: String, format: 'date-time' }) createdAt!: string;
 
-  static from(booking: BookingEntity, seatsRemaining: number, strategy: string): BookingResponseDto {
+  static from(
+    booking: BookingEntity,
+    seatsRemaining: number,
+    strategy: string,
+  ): BookingResponseDto {
     return {
       id: booking.id,
       eventId: booking.eventId,

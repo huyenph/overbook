@@ -122,7 +122,7 @@ export class RedisService implements OnModuleInit, OnApplicationShutdown {
     refillPerSecond: number,
     cost = 1,
   ): Promise<TokenBucketResult> {
-    const [allowed, remaining, retryAfterMs] = (await (
+    const [allowed, remaining, retryAfterMs] = await (
       this.client as unknown as {
         tokenBucket(
           key: string,
@@ -132,13 +132,7 @@ export class RedisService implements OnModuleInit, OnApplicationShutdown {
           cost: string,
         ): Promise<[number, number, number]>;
       }
-    ).tokenBucket(
-      key,
-      String(capacity),
-      String(refillPerSecond),
-      String(Date.now()),
-      String(cost),
-    )) as [number, number, number];
+    ).tokenBucket(key, String(capacity), String(refillPerSecond), String(Date.now()), String(cost));
 
     return { allowed: allowed === 1, remaining, retryAfterMs };
   }

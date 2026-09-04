@@ -159,9 +159,7 @@ export class BookingsService {
     // Read Committed does not protect this: every concurrent transaction read
     // the same snapshot before any of them wrote.
     const remaining = event.availableSeats - quantity;
-    await manager
-      .getRepository(EventEntity)
-      .update({ id: eventId }, { availableSeats: remaining });
+    await manager.getRepository(EventEntity).update({ id: eventId }, { availableSeats: remaining });
 
     return { seatsRemaining: remaining, eventName: event.name };
   }
@@ -182,9 +180,13 @@ export class BookingsService {
     }
 
     const remaining = event.availableSeats - quantity;
-    await manager
-      .getRepository(EventEntity)
-      .update({ id: eventId }, { availableSeats: remaining, version: () => 'version + 1' } as never);
+    await manager.getRepository(EventEntity).update(
+      { id: eventId },
+      {
+        availableSeats: remaining,
+        version: () => 'version + 1',
+      },
+    );
 
     return { seatsRemaining: remaining, eventName: event.name };
   }

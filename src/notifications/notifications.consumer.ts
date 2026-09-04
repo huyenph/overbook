@@ -1,9 +1,4 @@
-import {
-  Injectable,
-  Logger,
-  OnApplicationBootstrap,
-  OnApplicationShutdown,
-} from '@nestjs/common';
+import { Injectable, Logger, OnApplicationBootstrap, OnApplicationShutdown } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import type { Consumer, EachMessagePayload } from 'kafkajs';
 import { Semaphore } from '../common/concurrency/semaphore';
@@ -77,7 +72,9 @@ export class NotificationsConsumer implements OnApplicationBootstrap, OnApplicat
     this.stopping = true;
     // Disconnecting commits offsets and leaves the group cleanly, so a rebalance
     // does not have to wait for the session timeout to expire.
-    await Promise.all(this.consumers.map((consumer) => consumer.disconnect().catch(() => undefined)));
+    await Promise.all(
+      this.consumers.map((consumer) => consumer.disconnect().catch(() => undefined)),
+    );
   }
 
   private async start(groupId: string, topic: string, isRetryTopic: boolean): Promise<void> {
@@ -100,7 +97,7 @@ export class NotificationsConsumer implements OnApplicationBootstrap, OnApplicat
   }
 
   private async onMessage(payload: EachMessagePayload, isRetryTopic: boolean): Promise<void> {
-    const { topic, message, heartbeat } = payload;
+    const { topic, message } = payload;
     if (this.stopping) return;
 
     this.metrics.kafkaMessagesConsumedTotal.inc({ topic });
@@ -117,7 +114,9 @@ export class NotificationsConsumer implements OnApplicationBootstrap, OnApplicat
     const body = message.value?.toString() ?? '{}';
 
     if (isRetryTopic) {
-      await this.waitUntilDue(Number(header(HEADER_RETRY_AT) ?? '0'), heartbeat);
+      // Wrapped rather than passed by reference: kafkajs binds heartbeat to the
+      // batch it came from, and detaching it loses that binding.
+      await this.waitUntilDue(Number(header(HEADER_RETRY_AT) ?? '0'), () => payload.heartbeat());
       if (this.stopping) return;
     }
 
@@ -159,7 +158,9 @@ export class NotificationsConsumer implements OnApplicationBootstrap, OnApplicat
     while (!this.stopping) {
       const remaining = retryAtMs - Date.now();
       if (remaining <= 0) return;
-      await new Promise((resolve) => setTimeout(resolve, Math.min(remaining, HEARTBEAT_INTERVAL_MS)));
+      await new Promise((resolve) =>
+        setTimeout(resolve, Math.min(remaining, HEARTBEAT_INTERVAL_MS)),
+      );
       await heartbeat().catch(() => undefined);
     }
   }

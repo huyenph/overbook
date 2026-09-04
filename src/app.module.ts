@@ -35,9 +35,12 @@ import { RedisModule } from './redis/redis.module';
           // reading it locally (Q65 — logs are data, not decoration).
           transport:
             config.get<string>('app.env') === 'development'
-              ? { target: 'pino-pretty', options: { singleLine: true, translateTime: 'SYS:isoDateTime' } }
+              ? {
+                  target: 'pino-pretty',
+                  options: { singleLine: true, translateTime: 'SYS:isoDateTime' },
+                }
               : undefined,
-          genReqId: (req) => resolveTraceId(req.headers as Record<string, string | undefined>),
+          genReqId: (req) => resolveTraceId(req.headers),
           customProps: () => ({ instanceId: config.get<string>('app.instanceId') }),
           redact: ['req.headers.authorization', 'req.headers.cookie'],
           autoLogging: {

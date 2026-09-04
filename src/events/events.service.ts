@@ -68,7 +68,7 @@ export class EventsService {
     const items = hasMore ? rows.slice(0, query.limit) : rows;
 
     return {
-      items: items.map(EventResponseDto.from),
+      items: items.map((event) => EventResponseDto.from(event)),
       nextCursor: hasMore ? (items.at(-1)?.id ?? null) : null,
     };
   }

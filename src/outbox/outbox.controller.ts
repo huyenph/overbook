@@ -21,7 +21,12 @@ export class OutboxController {
       'After killing the API mid-booking, pending should be > 0 and then drain to 0 ' +
       'once the relay runs. No event is ever lost, only late.',
   })
-  async stats(): Promise<{ pending: number; published: number; failed: number; oldestPendingAt: string | null }> {
+  async stats(): Promise<{
+    pending: number;
+    published: number;
+    failed: number;
+    oldestPendingAt: string | null;
+  }> {
     const rows = await this.outbox
       .createQueryBuilder('outbox')
       .select('outbox.status', 'status')

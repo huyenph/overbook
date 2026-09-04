@@ -19,7 +19,10 @@ describe('Milestone 2 — Idempotency-Key collapses retries', () => {
     const responses = [];
     for (let attempt = 0; attempt < 5; attempt++) {
       responses.push(
-        await api().post(`/v1/events/${eventId}/bookings`).set('Idempotency-Key', key).send(payload),
+        await api()
+          .post(`/v1/events/${eventId}/bookings`)
+          .set('Idempotency-Key', key)
+          .send(payload),
       );
     }
 

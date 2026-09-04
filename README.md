@@ -132,11 +132,15 @@ Watch `cache_single_flight_waits_total`. Re-run with
 
 ### M5 — Lost events (Q60, Q27, Q37)
 ```bash
-# the lossy way: publish after commit, then die in between
-DIRECT_PUBLISH_MODE=true FAULT_CRASH_AFTER_BOOKING_COMMIT=true docker compose up -d api
-# the outbox way: same crash, event survives
-FAULT_CRASH_AFTER_BOOKING_COMMIT=true docker compose up -d api
-curl localhost:8080/v1/outbox/stats
+make crash-mode      # publish after commit, then die in between
+# book something -> the api exits, nginx answers 502
+make restart-api     # `up -d` will not revive it: PID 1 is still alive
+# the booking is in the database, the event is gone, nothing recorded the gap
+
+make crash-safe      # same crash, but the event went through the outbox
+# book something, then:
+make restart-api
+curl localhost:8080/v1/outbox/stats   # pending drains to 0, nothing lost
 ```
 
 ### M6 — Consumer dies mid-job (Q27, Q35, Q61)
