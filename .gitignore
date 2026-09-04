@@ -1,0 +1,11 @@
+node_modules/
+dist/
+coverage/
+.pnpm-store/
+.env
+*.log
+.DS_Store
+
+# Leftover empty git repo from the directory move — delete it, it is not part
+# of the project: rm -rf overbook-full
+overbook-full/
