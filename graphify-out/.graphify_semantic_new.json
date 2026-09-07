@@ -1,0 +1,888 @@
+{
+  "nodes": [
+    {
+      "id": "agents_overbook_learning_loop",
+      "label": "Overbook Learning Loop",
+      "file_type": "rationale",
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/AGENTS.md",
+      "source_location": "Project purpose",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "agents_booking_transaction_correctness_boundary",
+      "label": "Booking Transaction Correctness Boundary",
+      "file_type": "rationale",
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/AGENTS.md",
+      "source_location": "Architecture and request flow",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "agents_intentionally_broken_behavior",
+      "label": "Intentionally Broken Lesson Controls",
+      "file_type": "concept",
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/AGENTS.md",
+      "source_location": "Intentionally broken behavior: preserve it",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "readme_overbook_architecture",
+      "label": "Overbook Architecture",
+      "file_type": "document",
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/README.md",
+      "source_location": "The architecture, and what each piece is for",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "readme_nginx_load_balancer",
+      "label": "nginx Load Balancer",
+      "file_type": "concept",
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/README.md",
+      "source_location": "The architecture, and what each piece is for",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "readme_booking_transaction",
+      "label": "Booking Transaction",
+      "file_type": "concept",
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/README.md",
+      "source_location": "The architecture, and what each piece is for",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "readme_postgresql_source_of_truth",
+      "label": "PostgreSQL Source of Truth",
+      "file_type": "rationale",
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/README.md",
+      "source_location": "Conventions worth knowing before you edit",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "readme_redis_shared_coordination",
+      "label": "Redis Shared Coordination",
+      "file_type": "concept",
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/README.md",
+      "source_location": "The architecture, and what each piece is for",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "readme_kafka_event_pipeline",
+      "label": "Kafka Event Pipeline",
+      "file_type": "concept",
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/README.md",
+      "source_location": "The architecture, and what each piece is for",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "readme_background_work_scaling",
+      "label": "Replica-Safe Background Work",
+      "file_type": "rationale",
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/README.md",
+      "source_location": "Conventions worth knowing before you edit",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "docs_milestone_roadmap_break_measure_fix_loop",
+      "label": "Break Measure Fix Prove Loop",
+      "file_type": "rationale",
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/docs/milestone-roadmap.md",
+      "source_location": "Milestone Roadmap",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "docs_milestone_roadmap_m0_baseline_measurement",
+      "label": "M0 Baseline Measurement",
+      "file_type": "concept",
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/docs/milestone-roadmap.md",
+      "source_location": "Milestone 0",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "docs_milestone_roadmap_m1_overselling",
+      "label": "M1 Overselling Tickets",
+      "file_type": "concept",
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/docs/milestone-roadmap.md",
+      "source_location": "Milestone 1",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "docs_milestone_roadmap_m2_idempotency",
+      "label": "M2 Idempotency",
+      "file_type": "concept",
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/docs/milestone-roadmap.md",
+      "source_location": "Milestone 2",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "docs_milestone_roadmap_m3_cache_aside",
+      "label": "M3 Cache-Aside",
+      "file_type": "concept",
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/docs/milestone-roadmap.md",
+      "source_location": "Milestone 3",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "docs_milestone_roadmap_m4_cache_stampede",
+      "label": "M4 Cache Stampede Protection",
+      "file_type": "concept",
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/docs/milestone-roadmap.md",
+      "source_location": "Milestone 4",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "docs_milestone_roadmap_m5_transactional_outbox",
+      "label": "M5 Transactional Outbox",
+      "file_type": "concept",
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/docs/milestone-roadmap.md",
+      "source_location": "Milestone 5",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "docs_milestone_roadmap_m6_retry_dlq_backpressure",
+      "label": "M6 Retry DLQ and Backpressure",
+      "file_type": "concept",
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/docs/milestone-roadmap.md",
+      "source_location": "Milestone 6",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "docs_milestone_roadmap_m7_distributed_rate_limiting",
+      "label": "M7 Distributed Rate Limiting",
+      "file_type": "concept",
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/docs/milestone-roadmap.md",
+      "source_location": "Milestone 7",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "docs_milestone_roadmap_m8_horizontal_scaling",
+      "label": "M8 Horizontal Scaling",
+      "file_type": "concept",
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/docs/milestone-roadmap.md",
+      "source_location": "Milestone 8",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "docs_milestones_pessimistic_locking",
+      "label": "Pessimistic Locking",
+      "file_type": "rationale",
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/docs/milestones.md",
+      "source_location": "M1 — Overselling",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "docs_milestones_optimistic_locking",
+      "label": "Optimistic Locking",
+      "file_type": "rationale",
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/docs/milestones.md",
+      "source_location": "M1 — Overselling",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "docs_milestones_idempotency_claim",
+      "label": "Concurrent Idempotency Claim",
+      "file_type": "rationale",
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/docs/milestones.md",
+      "source_location": "M2 — Retries charging twice",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "docs_milestones_negative_cache_fail_open",
+      "label": "Negative Cache and Fail-Open Reads",
+      "file_type": "rationale",
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/docs/milestones.md",
+      "source_location": "M3 — Reads flattening PostgreSQL",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "docs_milestones_three_stampede_defences",
+      "label": "Three Cache Stampede Defences",
+      "file_type": "rationale",
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/docs/milestones.md",
+      "source_location": "M4 — Cache stampede",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "docs_milestones_at_least_once_delivery",
+      "label": "At-Least-Once Delivery",
+      "file_type": "rationale",
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/docs/milestones.md",
+      "source_location": "M5 — Lost events",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "docs_milestones_consumer_failure_defences",
+      "label": "Consumer Failure Defences",
+      "file_type": "rationale",
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/docs/milestones.md",
+      "source_location": "M6 — Consumer dies mid-job",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "docs_milestones_redis_lua_token_bucket",
+      "label": "Redis Lua Token Bucket",
+      "file_type": "rationale",
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/docs/milestones.md",
+      "source_location": "M7 — Unbounded writes",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "docs_milestones_graceful_shutdown_sequence",
+      "label": "Graceful Shutdown Sequence",
+      "file_type": "rationale",
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/docs/milestones.md",
+      "source_location": "M8 — Horizontal scaling",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "docs_system_design_questions_system_design_reference",
+      "label": "System Design Questions Reference",
+      "file_type": "document",
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/docs/system-design-questions.md",
+      "source_location": "Top 50 System Design Interview Questions",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "docker_compose_overbook_stack",
+      "label": "Overbook Docker Compose Stack",
+      "file_type": "code",
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/docker-compose.yml",
+      "source_location": "services",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "docker_compose_api_runtime_flags",
+      "label": "API Runtime Lesson Flags",
+      "file_type": "code",
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/docker-compose.yml",
+      "source_location": "x-api-env",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "docker_compose_one_shot_migration",
+      "label": "One-Shot Migration Runner",
+      "file_type": "rationale",
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/docker-compose.yml",
+      "source_location": "services.migrate",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "monitoring_prometheus_prometheus_dns_replica_discovery",
+      "label": "Prometheus DNS Replica Discovery",
+      "file_type": "rationale",
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/monitoring/prometheus/prometheus.yml",
+      "source_location": "scrape_configs.overbook-api",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "monitoring_grafana_provisioning_datasources_prometheus_prometheus_datasource",
+      "label": "Grafana Prometheus Datasource",
+      "file_type": "code",
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/monitoring/grafana/provisioning/datasources/prometheus.yml",
+      "source_location": "datasources",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "monitoring_grafana_provisioning_dashboards_dashboards_overbook_dashboard_provider",
+      "label": "Overbook Grafana Dashboard Provider",
+      "file_type": "code",
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/monitoring/grafana/provisioning/dashboards/dashboards.yml",
+      "source_location": "providers",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "pnpm_workspace_single_app_workspace",
+      "label": "Single-App pnpm Workspace",
+      "file_type": "code",
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/pnpm-workspace.yaml",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "visualizations_milestone_1_concurrency_control_two_transaction_race",
+      "label": "Two-Transaction Race Visualization",
+      "file_type": "document",
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/visualizations/milestone-1-concurrency-control.html",
+      "source_location": "Animated diagram",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "visualizations_milestone_1_concurrency_control_no_lock_scenario",
+      "label": "No-Lock Overselling Scenario",
+      "file_type": "concept",
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/visualizations/milestone-1-concurrency-control.html",
+      "source_location": "Break · no lock",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "visualizations_milestone_1_concurrency_control_pessimistic_scenario",
+      "label": "Pessimistic Wait Scenario",
+      "file_type": "concept",
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/visualizations/milestone-1-concurrency-control.html",
+      "source_location": "Pessimistic",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "visualizations_milestone_1_concurrency_control_optimistic_scenario",
+      "label": "Optimistic Retry Scenario",
+      "file_type": "concept",
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/visualizations/milestone-1-concurrency-control.html",
+      "source_location": "Optimistic",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "agents_overbook_learning_loop",
+      "target": "docs_milestone_roadmap_break_measure_fix_loop",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/AGENTS.md",
+      "source_location": "Project purpose",
+      "weight": 1.0
+    },
+    {
+      "source": "agents_booking_transaction_correctness_boundary",
+      "target": "readme_booking_transaction",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/AGENTS.md",
+      "source_location": "Architecture and request flow",
+      "weight": 1.0
+    },
+    {
+      "source": "agents_intentionally_broken_behavior",
+      "target": "docs_milestone_roadmap_break_measure_fix_loop",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/AGENTS.md",
+      "source_location": "Intentionally broken behavior: preserve it",
+      "weight": 1.0
+    },
+    {
+      "source": "readme_overbook_architecture",
+      "target": "readme_nginx_load_balancer",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/README.md",
+      "source_location": "The architecture, and what each piece is for",
+      "weight": 1.0
+    },
+    {
+      "source": "readme_overbook_architecture",
+      "target": "readme_booking_transaction",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/README.md",
+      "source_location": "The architecture, and what each piece is for",
+      "weight": 1.0
+    },
+    {
+      "source": "readme_overbook_architecture",
+      "target": "readme_redis_shared_coordination",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/README.md",
+      "source_location": "The architecture, and what each piece is for",
+      "weight": 1.0
+    },
+    {
+      "source": "readme_overbook_architecture",
+      "target": "readme_kafka_event_pipeline",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/README.md",
+      "source_location": "The architecture, and what each piece is for",
+      "weight": 1.0
+    },
+    {
+      "source": "readme_booking_transaction",
+      "target": "readme_postgresql_source_of_truth",
+      "relation": "shares_data_with",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/README.md",
+      "source_location": "The architecture, and what each piece is for",
+      "weight": 1.0
+    },
+    {
+      "source": "readme_booking_transaction",
+      "target": "readme_kafka_event_pipeline",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/README.md",
+      "source_location": "The architecture, and what each piece is for",
+      "weight": 1.0
+    },
+    {
+      "source": "readme_background_work_scaling",
+      "target": "docs_milestone_roadmap_m8_horizontal_scaling",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/README.md",
+      "source_location": "Conventions worth knowing before you edit",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_milestone_roadmap_m0_baseline_measurement",
+      "target": "docs_system_design_questions_system_design_reference",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/docs/milestone-roadmap.md",
+      "source_location": "Milestone 0",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_milestone_roadmap_m1_overselling",
+      "target": "docs_milestones_pessimistic_locking",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/docs/milestones.md",
+      "source_location": "M1 — Overselling",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_milestone_roadmap_m1_overselling",
+      "target": "docs_milestones_optimistic_locking",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/docs/milestones.md",
+      "source_location": "M1 — Overselling",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_milestone_roadmap_m2_idempotency",
+      "target": "docs_milestones_idempotency_claim",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/docs/milestones.md",
+      "source_location": "M2 — Retries charging twice",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_milestone_roadmap_m3_cache_aside",
+      "target": "docs_milestones_negative_cache_fail_open",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/docs/milestones.md",
+      "source_location": "M3 — Reads flattening PostgreSQL",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_milestone_roadmap_m4_cache_stampede",
+      "target": "docs_milestones_three_stampede_defences",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/docs/milestones.md",
+      "source_location": "M4 — Cache stampede",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_milestone_roadmap_m5_transactional_outbox",
+      "target": "docs_milestones_at_least_once_delivery",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/docs/milestones.md",
+      "source_location": "M5 — Lost events",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_milestone_roadmap_m6_retry_dlq_backpressure",
+      "target": "docs_milestones_consumer_failure_defences",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/docs/milestones.md",
+      "source_location": "M6 — Consumer dies mid-job",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_milestone_roadmap_m7_distributed_rate_limiting",
+      "target": "docs_milestones_redis_lua_token_bucket",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/docs/milestones.md",
+      "source_location": "M7 — Unbounded writes",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_milestone_roadmap_m8_horizontal_scaling",
+      "target": "docs_milestones_graceful_shutdown_sequence",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/docs/milestones.md",
+      "source_location": "M8 — Horizontal scaling",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_milestones_pessimistic_locking",
+      "target": "docs_milestones_optimistic_locking",
+      "relation": "semantically_similar_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/docs/milestones.md",
+      "source_location": "M1 — The two options",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_milestones_three_stampede_defences",
+      "target": "readme_redis_shared_coordination",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/docs/milestones.md",
+      "source_location": "M4 — Cache stampede",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_milestones_at_least_once_delivery",
+      "target": "readme_kafka_event_pipeline",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/docs/milestones.md",
+      "source_location": "M5 — Lost events",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_milestones_consumer_failure_defences",
+      "target": "readme_kafka_event_pipeline",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/docs/milestones.md",
+      "source_location": "M6 — Consumer dies mid-job",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_milestones_redis_lua_token_bucket",
+      "target": "readme_redis_shared_coordination",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/docs/milestones.md",
+      "source_location": "M7 — Unbounded writes",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_milestones_graceful_shutdown_sequence",
+      "target": "readme_nginx_load_balancer",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/docs/milestones.md",
+      "source_location": "M8 — Horizontal scaling",
+      "weight": 1.0
+    },
+    {
+      "source": "docker_compose_overbook_stack",
+      "target": "readme_overbook_architecture",
+      "relation": "implements",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/docker-compose.yml",
+      "source_location": "services",
+      "weight": 1.0
+    },
+    {
+      "source": "docker_compose_api_runtime_flags",
+      "target": "agents_intentionally_broken_behavior",
+      "relation": "implements",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/docker-compose.yml",
+      "source_location": "x-api-env",
+      "weight": 1.0
+    },
+    {
+      "source": "docker_compose_one_shot_migration",
+      "target": "docker_compose_overbook_stack",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/docker-compose.yml",
+      "source_location": "services.migrate",
+      "weight": 1.0
+    },
+    {
+      "source": "monitoring_prometheus_prometheus_dns_replica_discovery",
+      "target": "docs_milestone_roadmap_m8_horizontal_scaling",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/monitoring/prometheus/prometheus.yml",
+      "source_location": "scrape_configs.overbook-api",
+      "weight": 1.0
+    },
+    {
+      "source": "monitoring_grafana_provisioning_datasources_prometheus_prometheus_datasource",
+      "target": "monitoring_prometheus_prometheus_dns_replica_discovery",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/monitoring/grafana/provisioning/datasources/prometheus.yml",
+      "source_location": "datasources",
+      "weight": 1.0
+    },
+    {
+      "source": "monitoring_grafana_provisioning_dashboards_dashboards_overbook_dashboard_provider",
+      "target": "monitoring_grafana_provisioning_datasources_prometheus_prometheus_datasource",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/monitoring/grafana/provisioning/dashboards/dashboards.yml",
+      "source_location": "providers",
+      "weight": 1.0
+    },
+    {
+      "source": "visualizations_milestone_1_concurrency_control_two_transaction_race",
+      "target": "visualizations_milestone_1_concurrency_control_no_lock_scenario",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/visualizations/milestone-1-concurrency-control.html",
+      "source_location": "Animated diagram",
+      "weight": 1.0
+    },
+    {
+      "source": "visualizations_milestone_1_concurrency_control_two_transaction_race",
+      "target": "visualizations_milestone_1_concurrency_control_pessimistic_scenario",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/visualizations/milestone-1-concurrency-control.html",
+      "source_location": "Animated diagram",
+      "weight": 1.0
+    },
+    {
+      "source": "visualizations_milestone_1_concurrency_control_two_transaction_race",
+      "target": "visualizations_milestone_1_concurrency_control_optimistic_scenario",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/visualizations/milestone-1-concurrency-control.html",
+      "source_location": "Animated diagram",
+      "weight": 1.0
+    },
+    {
+      "source": "visualizations_milestone_1_concurrency_control_no_lock_scenario",
+      "target": "docs_milestone_roadmap_m1_overselling",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/visualizations/milestone-1-concurrency-control.html",
+      "source_location": "Break · no lock",
+      "weight": 1.0
+    },
+    {
+      "source": "visualizations_milestone_1_concurrency_control_pessimistic_scenario",
+      "target": "docs_milestones_pessimistic_locking",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/visualizations/milestone-1-concurrency-control.html",
+      "source_location": "Pessimistic",
+      "weight": 1.0
+    },
+    {
+      "source": "visualizations_milestone_1_concurrency_control_optimistic_scenario",
+      "target": "docs_milestones_optimistic_locking",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/visualizations/milestone-1-concurrency-control.html",
+      "source_location": "Optimistic",
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": [
+    {
+      "id": "implemented_milestone_learning_sequence",
+      "label": "Implemented Milestone Learning Sequence",
+      "nodes": [
+        "docs_milestone_roadmap_m0_baseline_measurement",
+        "docs_milestone_roadmap_m1_overselling",
+        "docs_milestone_roadmap_m2_idempotency",
+        "docs_milestone_roadmap_m3_cache_aside",
+        "docs_milestone_roadmap_m4_cache_stampede",
+        "docs_milestone_roadmap_m5_transactional_outbox",
+        "docs_milestone_roadmap_m6_retry_dlq_backpressure",
+        "docs_milestone_roadmap_m7_distributed_rate_limiting",
+        "docs_milestone_roadmap_m8_horizontal_scaling"
+      ],
+      "relation": "form",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/docs/milestone-roadmap.md"
+    },
+    {
+      "id": "booking_event_delivery_flow",
+      "label": "Booking Event Delivery Flow",
+      "nodes": [
+        "readme_booking_transaction",
+        "readme_postgresql_source_of_truth",
+        "readme_kafka_event_pipeline",
+        "docs_milestone_roadmap_m5_transactional_outbox",
+        "docs_milestones_at_least_once_delivery"
+      ],
+      "relation": "participate_in",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/README.md"
+    },
+    {
+      "id": "m1_concurrency_visual_scenarios",
+      "label": "M1 Concurrency Visual Scenarios",
+      "nodes": [
+        "visualizations_milestone_1_concurrency_control_no_lock_scenario",
+        "visualizations_milestone_1_concurrency_control_pessimistic_scenario",
+        "visualizations_milestone_1_concurrency_control_optimistic_scenario"
+      ],
+      "relation": "form",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "/Users/phamhoanghuyen/Development/System Design/overbook/visualizations/milestone-1-concurrency-control.html"
+    }
+  ],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

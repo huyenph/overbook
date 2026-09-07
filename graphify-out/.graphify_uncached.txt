@@ -1,0 +1,11 @@
+/Users/phamhoanghuyen/Development/System Design/overbook/AGENTS.md
+/Users/phamhoanghuyen/Development/System Design/overbook/README.md
+/Users/phamhoanghuyen/Development/System Design/overbook/docker-compose.yml
+/Users/phamhoanghuyen/Development/System Design/overbook/docs/milestone-roadmap.md
+/Users/phamhoanghuyen/Development/System Design/overbook/docs/milestones.md
+/Users/phamhoanghuyen/Development/System Design/overbook/docs/system-design-questions.md
+/Users/phamhoanghuyen/Development/System Design/overbook/monitoring/grafana/provisioning/dashboards/dashboards.yml
+/Users/phamhoanghuyen/Development/System Design/overbook/monitoring/grafana/provisioning/datasources/prometheus.yml
+/Users/phamhoanghuyen/Development/System Design/overbook/monitoring/prometheus/prometheus.yml
+/Users/phamhoanghuyen/Development/System Design/overbook/pnpm-workspace.yaml
+/Users/phamhoanghuyen/Development/System Design/overbook/visualizations/milestone-1-concurrency-control.html
