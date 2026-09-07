@@ -92,6 +92,8 @@ one commit.
 - `src/migrations/`: hand-written TypeORM schema history.
 - `test/`: HTTP end-to-end correctness tests against the real Compose stack.
 - `load-tests/`: k6 experiments, one script per applicable milestone.
+- `visualizations/`: standalone English-language diagrams and interactive
+  explainers for milestone concepts.
 - `monitoring/`: Prometheus and provisioned Grafana configuration.
 - `nginx/`, `docker-compose.yml`, `Dockerfile`: local production-like topology.
 
@@ -207,6 +209,9 @@ because named API containers cannot be scaled with Compose.
 
 ## Change discipline
 
+- Write all new files, code comments, documentation, UI copy, identifiers, and
+  agent-authored project content in English unless the user explicitly requests
+  another language for a specific deliverable.
 - Preserve existing user changes and keep edits scoped to the active milestone.
 - Prefer small, explicit implementations over abstractions that hide the pattern
   being taught.

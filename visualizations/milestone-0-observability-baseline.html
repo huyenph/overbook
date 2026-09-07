@@ -1,0 +1,35 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="shared/milestone-player.css"><title>Overbook · Milestone 0</title></head>
+<body data-milestone="m0"><div id="app"></div>
+<script>
+window.MILESTONE_DATA={m0:{number:0,shortTitle:'Observability Baseline',questions:['Q51 · Estimation','Q52 · Health checks','Q65 · Observability'],
+title:'If latency rises and nobody can explain why, there is no baseline.',subtitle:'Offer a known load, separate liveness from readiness, and connect bounded metrics with traceable logs so a performance claim has evidence.',
+roughTitle:'From offered load to an explainable measurement',roughCopy:'k6 controls arrival rate through nginx. The API emits route-templated metrics and validated trace IDs; Prometheus stores them and Grafana exposes latency percentiles and bottlenecks.',
+simTitle:'A request goes from invisible to diagnosable',simCopy:'Compare flying blind with the instrumentation currently applied in the codebase.',
+flow:[
+{name:'k6 workload',value:'300 requests / second',description:'Constant arrival rate creates a known offered load.'},
+{name:'nginx + API',value:'GET /v1/events/:id',description:'Production-like ingress and application work.'},
+{name:'Signals',value:'traceId · route · status · duration',description:'Structured logs and bounded-cardinality metrics.'},
+{name:'Prometheus + Grafana',value:'p95 · p99 · in-flight · CPU',description:'Evidence for the performance explanation.'}],
+modes:[
+{label:'Break · flying blind',tone:'danger',startCopy:'Known traffic, unknown behavior.',concepts:[
+{q:'Q51 · ESTIMATION',title:'A guess is not capacity',state:'✕ No measured baseline',copy:'Estimated QPS cannot reveal the actual saturation point or latency tail.',tone:'danger'},
+{q:'Q52 · HEALTH CHECKS',title:'One health signal',state:'✕ Dependency failure can trigger restarts',copy:'Treating liveness and readiness as one check turns a recoverable dependency blip into fleet churn.',tone:'danger'},
+{q:'Q65 · OBSERVABILITY',title:'No correlated evidence',state:'✕ Symptom without cause',copy:'Raw URLs create cardinality and uncorrelated logs cannot follow one request.',tone:'danger'}],
+metrics:[['Offered load','unknown'],['p95 / p99','unknown'],['Bottleneck','unknown']],frames:[
+{active:[0],paths:[0],status:{0:'k6 offers 300 RPS'},metrics:['300 RPS','unknown','unknown'],note:'The workload is known, but the service has no useful signals yet.'},
+{active:[1],paths:[0],tones:{1:'wait'},status:{1:'Requests queue or slow down'},metrics:['300 RPS','unknown','unknown'],note:'Users feel latency, but there is no percentile or in-flight measurement.'},
+{active:[2],paths:[1],tones:{2:'bad'},status:{2:'Unstructured, high-cardinality clues'},metrics:['300 RPS','unknown','guessing'],note:'A raw URL per event would create a time series per ID and make the monitoring system part of the problem.'},
+{active:[3],paths:[2],tones:{3:'bad'},status:{3:'No decision-ready view'},metrics:['300 RPS','unknown','unknown'],note:'The run ends without an evidence-backed sentence about p95 or the bottleneck.'}],
+result:{title:'NO BASELINE',copy:'The system may be fast or slow; the experiment cannot prove either.',tone:'bad'}},
+{label:'Fixed · instrumented',tone:'safe',startCopy:'Known traffic, traceable behavior.',concepts:[
+{q:'Q51 · ESTIMATION',title:'Estimate, then measure',state:'● Applied with constant arrival rate',copy:'Start from expected QPS, then offer that load and compare the estimate with reality.',tone:'active'},
+{q:'Q52 · HEALTH CHECKS',title:'Liveness ≠ readiness',state:'● Applied',copy:'/health/live touches no dependency; /health/ready checks dependencies and draining.',tone:'active'},
+{q:'Q65 · OBSERVABILITY',title:'Metrics + logs + trace ID',state:'● Applied',copy:'Route templates bound metric labels; validated request IDs connect nginx, API, and Kafka.',tone:'active'}],
+metrics:[['Offered load','unknown'],['p95 / p99','unknown'],['Diagnosis','unknown']],frames:[
+{active:[0],paths:[0],status:{0:'Constant arrival rate: 300 RPS'},metrics:['300 RPS','collecting','pending'],note:'k6 applies a controlled, repeatable load through nginx.'},
+{active:[1],paths:[0],status:{1:'Request gets validated trace ID'},metrics:['300 RPS','collecting','trace-linked'],note:'The API records duration, status, route template, and instance without putting UUIDs into metric labels.'},
+{active:[2],paths:[1],status:{2:'Structured logs + Prometheus metrics'},metrics:['300 RPS','calculating','signals correlated'],note:'Liveness remains process-only while readiness independently reports dependency reachability and drain state.'},
+{active:[3],paths:[2],tones:{3:'good'},status:{3:'Percentiles and saturation visible'},metrics:['300 RPS','measured','evidence-backed'],note:'Grafana now supports a concrete statement: at this offered load, p95 is the observed value and the bottleneck is the signal that saturated.'}],
+result:{title:'BASELINE ESTABLISHED',copy:'Record the real p95/p99 and bottleneck from the run; never invent them.',tone:'good'}}],
+takeaways:[['Measure after estimating','Q51 provides a starting load, not a performance conclusion.'],['Probe the right question','Liveness asks whether the process is wedged; readiness asks whether it should receive traffic.'],['Bound every label','Use route templates and low-cardinality dimensions; keep trace IDs in logs, not metric labels.']]}};
+</script><script src="shared/milestone-player.js"></script></body></html>

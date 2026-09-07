@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Overbook · Milestone Visualizations</title>
+  <style>
+    :root { color-scheme: dark; --bg:#071018; --panel:#0d1923; --line:#29404f; --text:#e8f0f5; --muted:#93a8b6; --cyan:#42d3ff; --green:#63e6a4; }
+    * { box-sizing: border-box; }
+    body { margin:0; min-width:320px; background:radial-gradient(circle at 15% 0%,rgba(66,211,255,.12),transparent 31rem),var(--bg); color:var(--text); font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; line-height:1.5; }
+    main { width:min(1120px,calc(100% - 32px)); margin:auto; padding:46px 0 64px; }
+    .eyebrow { color:var(--cyan); font-size:12px; letter-spacing:.15em; text-transform:uppercase; }
+    h1 { max-width:820px; margin:7px 0 10px; font-size:clamp(32px,5vw,56px); line-height:1.05; letter-spacing:-.04em; }
+    .lead { max-width:760px; margin-bottom:34px; color:var(--muted); font-size:17px; }
+    .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(270px,1fr)); gap:12px; }
+    a { display:flex; min-height:190px; padding:19px; flex-direction:column; border:1px solid var(--line); border-radius:15px; background:rgba(13,25,35,.9); color:inherit; text-decoration:none; transition:transform .2s,border-color .2s,background .2s; }
+    a:hover { transform:translateY(-4px); border-color:var(--cyan); background:rgba(66,211,255,.07); }
+    .number { color:var(--cyan); font:12px ui-monospace,SFMono-Regular,Menlo,monospace; }
+    h2 { margin:16px 0 6px; font-size:19px; }
+    p { margin:0; color:var(--muted); font-size:13px; }
+    .status { margin-top:auto; padding-top:16px; color:var(--green); font-size:12px; }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="eyebrow">Overbook · System Design Lab</div>
+    <h1>Break the system. Watch the fix take effect.</h1>
+    <p class="lead">Interactive diagrams for every implemented milestone. Each page follows the same learning loop: reproduce the failure, apply the current code’s mechanism, and observe the invariant that changes.</p>
+    <nav class="grid" aria-label="Implemented milestone visualizations">
+      <a href="milestone-0-observability-baseline.html"><span class="number">MILESTONE 00 · Q51 / Q52 / Q65</span><h2>Observability Baseline</h2><p>Known offered load becomes an evidence-backed latency and bottleneck explanation.</p><span class="status">Open visualization →</span></a>
+      <a href="milestone-1-concurrency-control.html"><span class="number">MILESTONE 01 · Q33 / Q56 / Q57</span><h2>Concurrency Control</h2><p>Two requests race for one seat under no lock, pessimistic locking, and optimistic CAS.</p><span class="status">Open visualization →</span></a>
+      <a href="milestone-2-idempotent-retries.html"><span class="number">MILESTONE 02 · Q29 / Q64</span><h2>Idempotent Retries</h2><p>Five deliveries of one client intent converge on one booking and one response.</p><span class="status">Open visualization →</span></a>
+      <a href="milestone-3-cache-aside.html"><span class="number">MILESTONE 03 · Q21 / Q22 / Q24</span><h2>Cache-Aside Reads</h2><p>Shared Redis absorbs repeated hot reads while PostgreSQL remains authoritative.</p><span class="status">Open visualization →</span></a>
+      <a href="milestone-4-cache-stampede.html"><span class="number">MILESTONE 04 · Q23 / Q59</span><h2>Cache Stampede Protection</h2><p>One synchronized expiry becomes either a database spike or one coordinated refill.</p><span class="status">Open visualization →</span></a>
+      <a href="milestone-5-transactional-outbox.html"><span class="number">MILESTONE 05 · Q27 / Q37 / Q60</span><h2>Transactional Outbox</h2><p>A crash between database commit and Kafka publish changes from event loss to recoverable delay.</p><span class="status">Open visualization →</span></a>
+      <a href="milestone-6-retry-dlq-backpressure.html"><span class="number">MILESTONE 06 · Q27 / Q35 / Q61</span><h2>Retry, DLQ, and Backpressure</h2><p>Failed notification work follows a bounded and observable path instead of disappearing.</p><span class="status">Open visualization →</span></a>
+      <a href="milestone-7-distributed-rate-limit.html"><span class="number">MILESTONE 07 · Q26 / Q50</span><h2>Distributed Rate Limiting</h2><p>Three replicas consume from one atomic system-wide traffic budget.</p><span class="status">Open visualization →</span></a>
+      <a href="milestone-8-horizontal-scaling.html"><span class="number">MILESTONE 08 · Q3 / Q4 / Q5 / Q9 / Q10 / Q53</span><h2>Horizontal Scaling</h2><p>Shared state, load balancing, readiness, and graceful drain make N replicas act as one service.</p><span class="status">Open visualization →</span></a>
+    </nav>
+  </main>
+</body>
+</html>

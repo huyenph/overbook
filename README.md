@@ -231,3 +231,8 @@ rather than just wiring:
 
 - [`docs/milestone-roadmap.md`](docs/milestone-roadmap.md) — the learning plan this implements
 - [`docs/system-design-questions.md`](docs/system-design-questions.md) — the 70 questions the milestones map onto
+
+## Interactive visualizations
+
+Open [`visualizations/index.html`](visualizations/index.html) for animated
+break-versus-fix explainers covering every implemented milestone (M0-M8).
